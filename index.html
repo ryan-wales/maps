@@ -1,41 +1,221 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Basic map</title>
-    <script src="scripts/leaflet/leaflet.js" type="text/javascript"></script>
-    <script src="geojson/wales-uk-parl.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="scripts/leaflet/leaflet.css" />
-    <style>
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      html,
-      body,
-      #map {
-        height: 100%;
-        width: 100%;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welsh Electoral Maps</title>
   </head>
   <body>
-    <div id="map"></div>
-    <script>
-      var map = L.map("map", { center: [52.35, -4], zoom: 8 });
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap",
-      }).addTo(map);
-
-      function onEachFeature(feature, layer) {
-        if (feature.properties && feature.properties.PCON25NM) {
-          layer.bindPopup(feature.properties.PCON25NM);
-        }
-      }
-
-      var constituencies = L.geoJson(wales, {
-        onEachFeature: onEachFeature,
-      }).addTo(map);
-    </script>
+    <h1>Welsh Electoral Maps</h1>
+    <h2>Future Boundaries</h2>
+    <ul>
+      <li>
+        <a href="uk_parliament.html"
+          >UK Parliament - Boundary Commission for Wales - 2023 Review - Final
+          Recommendations</a
+        >
+      </li>
+      <li>
+        <a href="senedd.html"
+          >Senedd Cymru - Suggested Constituencies Based on the Boundary
+          Commission for Wales - 2023 Review - Final Recommendations</a
+        >
+      </li>
+    </ul>
+    <h2>Proposed Senedd Constituencies</h2>
+    <p>
+      The Senedd Cymru (Members and Elections) Bill (as currently drafted) makes
+      provision for Senedd constituencies in the 2026 election must consist of
+      the combined areas of two contiguous UK parliamentary constituencies in
+      Wales.
+    </p>
+    <p>
+      The future Senedd map is based on the following combinations of
+      constituencies from the Boundary Commission for Wales - 2023 Review -
+      Final Recommendation.
+    </p>
+    <table>
+      <tr>
+        <th>Constitiency</th>
+        <th>Combined With</th>
+        <th>To Create</th>
+      </tr>
+      <tr>
+        <td>Aberafan Maesteg</td>
+        <td>Rhondda and Ogmore</td>
+        <td>Afan, Rhondda, Llyfni and Ogmore</td>
+      </tr>
+      <tr>
+        <td>Alyn and Deeside</td>
+        <td>Wrexham</td>
+        <td>Alyn, Deeside and Wrexham</td>
+      </tr>
+      <tr>
+        <td>Bangor Aberconwy</td>
+        <td>Ynys Môn</td>
+        <td>Bangor Aberconwy Môn</td>
+      </tr>
+      <tr>
+        <td>Blaenau Gwent and Rhymney</td>
+        <td>Caerphilly</td>
+        <td>Blaenau Gwent and Caerphilly</td>
+      </tr>
+      <tr>
+        <td>Brecon, Radnor, and Cwm-tawe</td>
+        <td>Swansea East and Neath</td>
+        <td>Tawe, Neath, Brecon and Radnor</td>
+      </tr>
+      <tr>
+        <td>Bridgend</td>
+        <td>Vale of Glamorgan</td>
+        <td>Bridgend and Vale of Glamorgan</td>
+      </tr>
+      <tr>
+        <td>Caerfyrddin</td>
+        <td>Llanelli</td>
+        <td>Llanelli a Caerfyrddin</td>
+      </tr>
+      <tr>
+        <td>Caerphilly</td>
+        <td>Blaenau Gwent and Rhymney</td>
+        <td>Blaenau Gwent and Caerphilly</td>
+      </tr>
+      <tr>
+        <td>Cardiff East</td>
+        <td>Cardiff South and Penarth</td>
+        <td>Cardiff South, East and Penarth</td>
+      </tr>
+      <tr>
+        <td>Cardiff North</td>
+        <td>Cardiff West</td>
+        <td>Cardiff North and West</td>
+      </tr>
+      <tr>
+        <td>Cardiff South & Penarth</td>
+        <td>Cardiff East</td>
+        <td>Cardiff South, East and Penarth</td>
+      </tr>
+      <tr>
+        <td>Cardiff West</td>
+        <td>Cardiff North</td>
+        <td>Cardiff North and West</td>
+      </tr>
+      <tr>
+        <td>Ceredigion Preseli</td>
+        <td>Mid and South Pembrokeshire</td>
+        <td>Ceredigion and Pembrokeshire</td>
+      </tr>
+      <tr>
+        <td>Clwyd East</td>
+        <td>Clwyd North</td>
+        <td>Clwyd North and East</td>
+      </tr>
+      <tr>
+        <td>Clwyd North</td>
+        <td>Clwyd East</td>
+        <td>Clwyd North and East</td>
+      </tr>
+      <tr>
+        <td>Dwyfor Meirionnydd</td>
+        <td>Montgomeryshire and Glwydŵr</td>
+        <td>Dwyfor, Meirionnydd, Montgomery and Glwydŵr</td>
+      </tr>
+      <tr>
+        <td>Gower</td>
+        <td>Swansea West</td>
+        <td>Gower and Swansea West</td>
+      </tr>
+      <tr>
+        <td>Llanelli</td>
+        <td>Caerfyrddin</td>
+        <td>Llanelli a Caerfyrddin</td>
+      </tr>
+      <tr>
+        <td>Merthyr Tydfil and Aberdare</td>
+        <td>Pontypridd</td>
+        <td>Merthyr, Cynnon and Pontypridd</td>
+      </tr>
+      <tr>
+        <td>Mid and South Pembrokeshire</td>
+        <td>Ceredigion Preseli</td>
+        <td>Ceredigion and Pembrokeshire</td>
+      </tr>
+      <tr>
+        <td>Monmouthshire</td>
+        <td>Torfaen</td>
+        <td>Monmouthshire and Torfaen</td>
+      </tr>
+      <tr>
+        <td>Montgomeryshire and Glyndwr</td>
+        <td>Dwyfor Meirionnydd</td>
+        <td>Dwyfor, Meirionnydd, Montgomery and Glwydŵr</td>
+      </tr>
+      <tr>
+        <td>Neath and Swansea East</td>
+        <td>Brecon, Radnor, and Cwm-tawe</td>
+        <td>Tawe, Neath, Brecon and Radnor</td>
+      </tr>
+      <tr>
+        <td>Newport East</td>
+        <td>Newport West and Islwyn</td>
+        <td>Newport and Islwyn</td>
+      </tr>
+      <tr>
+        <td>Newport West and Islwyn</td>
+        <td>Newport East</td>
+        <td>Newport and Islwyn</td>
+      </tr>
+      <tr>
+        <td>Pontypridd</td>
+        <td>Merthyr Tydfil and Aberdare</td>
+        <td>Merthyr, Cynnon and Pontypridd</td>
+      </tr>
+      <tr>
+        <td>Rhondda and Ogmore</td>
+        <td>Aberafan and Maesteg</td>
+        <td>Afan, Rhondda Llyfni and Ogmore</td>
+      </tr>
+      <tr>
+        <td>Swansea West</td>
+        <td>Gower</td>
+        <td>Gower and Swansea West</td>
+      </tr>
+      <tr>
+        <td>Torfaen</td>
+        <td>Monmouth</td>
+        <td>Monmouth and Torfaen</td>
+      </tr>
+      <tr>
+        <td>Vale of Glamorgan</td>
+        <td>Bridgend</td>
+        <td>Bridgend and Vale of Glamorgan</td>
+      </tr>
+      <tr>
+        <td>Wrexham</td>
+        <td>Alyn and Deeside</td>
+        <td>Alyn, Deeside and Wrexham</td>
+      </tr>
+      <tr>
+        <td>Ynys Môn</td>
+        <td>Bangor Aberconwy</td>
+        <td>Bangor Aberconwy Môn</td>
+      </tr>
+    </table>
+    <p>
+      These suggestions are designed on a 'best guess' approximation of how
+      constituencies may be combined by the Local Democracy and Boundary
+      Commission for Wales and do not form part of any official proposals. These
+      boundaries have been created for illustrative purposes only.
+    </p>
+    <p>
+      Boundaries are created using data from the
+      <a href="https://geoportal.statistics.gov.uk/"
+        >Office of National Statistics Open Geography Portal</a
+      >.
+    </p>
+    <p>
+      This site was created by
+      <a href="https://x.com/ryanmthomas/">Ryan Thomas</a>.
+    </p>
   </body>
 </html>
