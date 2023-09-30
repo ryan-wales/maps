@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seats</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .svg-container {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        padding-bottom: 500px;
+        vertical-align: middle;
+        overflow: hidden;
+      }
+      .svg-content {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .input-container {
+        height: 30px;
+      }
+      .seatInput {
+        float: right;
+      }
+      #warning {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px red solid;
+        background-color: #ffd1d1;
+        display: none;
+        padding: 0 10 0 10;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Draw your own Senedd (2026 edition)</h1>
+    <div class="svg-container">
+      <svg
+        id="chamber"
+        viewBox="0 0 800 500"
+        preserveAsoectRatio="xMinYMin meet"
+        class="svg-content"
+      ></svg>
+    </div>
+    <h2>Update Seating Chart</h2>
+    <div class="form">
+      <form>
+        <div class="input-container">
+          <label for="green">Green</label>
+          <input
+            type="number"
+            id="green"
+            class="seatInput"
+            value="0"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="plaid">Plaid Cymru</label>
+          <input
+            type="number"
+            id="plaid"
+            class="seatInput"
+            value="23"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="labour">Labour</label>
+          <input
+            type="number"
+            id="labour"
+            class="seatInput"
+            value="44"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="libdems">Liberal Democrats</label>
+          <input
+            type="number"
+            id="libdems"
+            class="seatInput"
+            value="1"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="indy">Independents</label>
+          <input
+            type="number"
+            id="indy"
+            class="seatInput"
+            value="0"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="cons">Conservatives</label>
+          <input
+            type="number"
+            id="cons"
+            class="seatInput"
+            value="24"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="reform">Reform</label>
+          <input
+            type="number"
+            id="reform"
+            class="seatInput"
+            value="4"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div class="input-container">
+          <label for="abolish">Abolish</label>
+          <input
+            type="number"
+            id="abolish"
+            class="seatInput"
+            value="0"
+            min="0"
+            max="96"
+          />
+        </div>
+        <div id="warning"></div>
+        <div class="input-container">
+          <input type="Submit" id="submit" value="Update Seating Chart" />
+        </div>
+        <p>
+          If you have any feedback please reach out to me
+          <a href="https://x.com/ryanmthomas">@ryanmthomas</a>.
+        </p>
+      </form>
+    </div>
+    <script>
+      let seats = [];
+      let totalSeats = 96;
+      let rows = 5;
+      let outsideRadius = 360;
+      let totalRadius = 0;
+      let semicircles = [];
+      let parties = [
+        { name: "Green", seats: 0, color: "#02A95B" },
+        { name: "Plaid Cymru", seats: 23, color: "#005B54" },
+        { name: "Labour", seats: 44, color: "#E4003B" },
+        { name: "Liberal Democrats", seats: 1, color: "#FAA61A" },
+        { name: "Independents", seats: 0, color: "grey" },
+        { name: "Conservatives", seats: 24, color: "#0087DC" },
+        { name: "Reform", seats: 4, color: "#12B6CF" },
+        { name: "Abolish", seats: 0, color: "black" },
+      ];
+
+      for (let row = 0; row < rows; row++) {
+        totalRadius = totalRadius + outsideRadius - 60 * row;
+      }
+
+      for (let row = 0; row < rows; row++) {
+        radius = outsideRadius - 60 * row;
+        let weight = (Math.PI * radius) / (totalRadius * Math.PI);
+        semicircles.push({
+          seats: Math.round(totalSeats * weight),
+          radius: radius,
+          seatCount: 0,
+          currentAngle: 0,
+        });
+      }
+      var generateSeats = () => {
+        for (let j = 0; j < parties.length; j++) {
+          z = 0;
+          for (let i = 0; i < parties[j]["seats"]; i++) {
+            seats.push({
+              id: z,
+              color: parties[j]["color"],
+              party: parties[j]["name"],
+            });
+            z++;
+          }
+        }
+      };
+
+      generateSeats();
+
+      buildSemicircle = (svg, seatsArray, semicircles) => {
+        for (let i = 0; i < seatsArray.length; i++) {
+          var newElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+          );
+
+          test = [];
+          k = 0;
+
+          for (l = 0; l < semicircles.length; l++) {
+            test.push(semicircles[l]["currentAngle"]);
+          }
+
+          for (n = 1; n < test.length; n++) {
+            if (test[n] < test[n - 1]) {
+              k = n;
+            }
+          }
+
+          var r = semicircles[k]["radius"];
+
+          var x = 400 - r * Math.cos(semicircles[k]["currentAngle"]);
+          var y = 460 - r * Math.sin(semicircles[k]["currentAngle"]);
+
+          newElement.setAttribute("cx", x);
+          newElement.setAttribute("cy", y);
+          newElement.setAttribute("r", "17");
+          newElement.setAttribute("id", seats[i]["id"]);
+          newElement.setAttribute("class", "svg-seat");
+          newElement.style.fill = seats[i]["color"];
+          svg.appendChild(newElement);
+
+          semicircles[k]["seatCount"] = semicircles[k]["seatCount"] + 1;
+          semicircles[k]["currentAngle"] =
+            (Math.PI * semicircles[k]["seatCount"]) /
+            (semicircles[k]["seats"] - 1);
+        }
+        for (let z = 0; z < semicircles.length; z++) {
+          semicircles[z]["seatCount"] = 0;
+          semicircles[z]["currentAngle"] = 0;
+        }
+      };
+
+      let svg = document.getElementById("chamber");
+
+      buildSemicircle(svg, seats, semicircles);
+
+      let elements = document.getElementsByClassName("seatInput");
+
+      let sumCheck = () => {
+        sum = 0;
+        for (let z = 0; z < elements.length; z++) {
+          sum = sum + Number(elements[z].value);
+        }
+        if (sum == 96) {
+          document.getElementById("warning").innerHTML = "";
+          document.getElementById("warning").style.display = "none";
+          document.getElementById("submit").removeAttribute("disabled");
+        } else {
+          document.getElementById("warning").innerHTML =
+            "<p>The total number of seats must add up to 96.</p>";
+          document.getElementById("warning").style.display = "block";
+          document
+            .getElementById("submit")
+            .setAttribute("disabled", "disabled");
+        }
+      };
+
+      updateSeats = (event) => {
+        event.preventDefault();
+        parties[0]["seats"] = document.getElementById("green").value;
+        parties[1]["seats"] = document.getElementById("plaid").value;
+        parties[2]["seats"] = document.getElementById("labour").value;
+        parties[3]["seats"] = document.getElementById("libdems").value;
+        parties[4]["seats"] = document.getElementById("indy").value;
+        parties[5]["seats"] = document.getElementById("cons").value;
+        parties[6]["seats"] = document.getElementById("reform").value;
+        parties[7]["seats"] = document.getElementById("abolish").value;
+        seats = [];
+        generateSeats();
+        let existingSeats = document.getElementsByClassName("svg-seat");
+        for (let z = existingSeats.length - 1; z >= 0; z--) {
+          existingSeats[z].remove();
+        }
+        buildSemicircle(svg, seats, semicircles);
+      };
+
+      for (let z = 0; z < elements.length; z++) {
+        elements[z].addEventListener("change", sumCheck);
+      }
+
+      document.getElementById("submit").addEventListener("click", updateSeats);
+    </script>
+  </body>
+</html>
